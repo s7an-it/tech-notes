@@ -1,0 +1,10 @@
+# Modify next build number of a multibranch job on specific branch
+def project = Jenkins.instance.getItemByFullName("EXAMPLE/service-example")    
+project.getAllJobs().each{ item ->   
+    if (item.name == 'develop'){
+      println "debug: item name is ${item}"
+      item.updateNextBuildNumber(777);
+      item.saveNextBuildNumber();
+      println('new build: ' + item.getNextBuildNumber())
+    }
+}
