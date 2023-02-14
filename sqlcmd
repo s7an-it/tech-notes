@@ -1,0 +1,6 @@
+# Connect to MSSQL server from linux container
+/opt/mssql-tools/bin/sqlcmd -b -S {PLACEHOLDER_SERVER_NAME} -U {PLACEHOLDER_USER} -P {PLACEHOLDER_PASSWORD}
+# Execute query once connected to list databases
+1> SELECT name, database_id, create_date
+2> FROM sys.databases;
+3> GO
