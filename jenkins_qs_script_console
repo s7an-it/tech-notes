@@ -25,3 +25,41 @@ for(c in creds) {
     println(String.format("id=%s desc=%s user=%s pass=%s\n", c.id, c.description, c.username, c.password))
   }
 }
+
+### Open connection to URL without valid certificate and get content
+import groovy.json.JsonSlurperClassic
+import javax.net.ssl.HttpsURLConnection
+import javax.net.ssl.HostnameVerifier
+import javax.net.ssl.X509TrustManager
+import javax.net.ssl.TrustManager
+import javax.net.ssl.SSLSession
+import java.security.cert.X509Certificate
+import java.security.cert.CertificateException
+
+// Create a trust manager that does not validate certificate chains
+def trustAllCerts = [
+    new X509TrustManager() {
+        public X509Certificate[] getAcceptedIssuers() {
+            return null
+        }
+
+        public void checkServerTrusted(X509Certificate[] certs, String authType) throws CertificateException {
+        }
+
+        public void checkClientTrusted(X509Certificate[] certs, String authType) throws CertificateException {
+        }
+    }
+] as TrustManager[] 
+
+// Create all-trusting host name verifier
+HostnameVerifier allHostsValid = new HostnameVerifier() {
+    public boolean verify(String hostname, SSLSession session) {
+        return true;
+    }
+};
+
+// Handle connection
+URL url = new URL("https://service-configurations.uat1.express-ops.ezbob.local/TenantList/prod/master");
+HttpsURLConnection connection = url.openConnection()
+connection.setHostnameVerifier(allHostsValid);
+def content = connection.getInputStream().getText()
