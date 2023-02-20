@@ -63,3 +63,6 @@ URL url = new URL("https://service-configurations.uat1.express-ops.ezbob.local/T
 HttpsURLConnection connection = url.openConnection()
 connection.setHostnameVerifier(allHostsValid);
 def content = connection.getInputStream().getText()
+
+### Jenkins Library Trigger from Specific Branch
+@Library('jenkins-lib@bugfix/DEVOPS-11-example-java-debug-manager-') _
